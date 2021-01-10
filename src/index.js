@@ -1,10 +1,20 @@
-const { app, BrowserWindow, globalShortcut, remote } = require('electron');
+const { app, BrowserWindow, globalShortcut, Menu, Tray } = require('electron');
 const path = require('path');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit();
 }
+
+let tray = null
+app.whenReady().then(() => {
+  tray = new Tray(__dirname + '/assets/icons/1f389.png')
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Close', type: 'normal' },
+  ])
+  contextMenu.items[0].click = () => app.quit()
+  tray.setContextMenu(contextMenu)
+})
 
 const createWindow = () => {
 
@@ -29,6 +39,20 @@ const createWindow = () => {
 };
 
 if (process.platform === 'linux') {
+  // let appIcon = null
+  // app.whenReady().then(() => {
+  //   appIcon = new Tray(__dirname + '/assets/icons/1f389.png')
+  //   const contextMenu = Menu.buildFromTemplate([
+  //     { label: 'Close', type: 'normal' },
+  //   ])
+  //
+  //   // Make a change to the context menu
+  //   contextMenu.items[0].click = () => app.quit()
+  //
+  //   // Call this again for Linux because we modified the context menu
+  //   appIcon.setContextMenu(contextMenu)
+  // })
+
   app.commandLine.appendSwitch('enable-transparent-visuals');
   app.commandLine.appendSwitch('disable-gpu');
 }
