@@ -1,31 +1,39 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="UTF-8">
     <title>Hello World!</title>
     <link rel="stylesheet" href="index.css">
     <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
-  </head>
-  <body>
-  <canvas id="my-canvas"></canvas>
-  <div class="pyro">
+</head>
+<body>
+
+<div class="main-window-wrapper">
+  <div class="content">
+    <div class="victory-window">
+        <h1>You are winner!</h1>
+    </div>
+  </div>
+</div>
+
+<canvas id="my-canvas"></canvas>
+<div class="pyro">
     <div class="before"></div>
     <div class="after"></div>
-  </div>
-  <audio src="assets/kids.mp3" autoplay></audio>
-  <audio src="assets/fanfare.mp3" autoplay></audio>
-  <audio src="assets/fireworks_3sbgqXLt.mp3" autoplay loop></audio>
+</div>
+<audio src="assets/kids.mp3" autoplay></audio>
+<audio src="assets/fanfare.mp3" autoplay></audio>
+<audio src="assets/fireworks_3sbgqXLt.mp3" autoplay loop></audio>
 
-
-  <script>
+<script>
     const confettiSettings = {
-      target: 'my-canvas',
-      max: 150,
-      animate: true,
-      rotate: true
+        target: 'my-canvas',
+        max: 150,
+        animate: true,
+        rotate: true
     };
     const confetti = new ConfettiGenerator(confettiSettings);
     confetti.render();
-  </script>
-  </body>
+</script>
+</body>
 </html>
