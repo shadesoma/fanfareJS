@@ -9,13 +9,8 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\"",
+    "lint": "echo \"No linting configured\""
   },
-  "author": {
-    "name": "somakun",
-    "email": "somabaka@gmail.com"
-  },
-  "license": "MIT",
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0"
   },
