@@ -16,13 +16,43 @@ body {
 }
 
 .victory-window {
-  width: 50vw;
-  height: 50vh;
-  background: #ffffff;
-  border-radius: 10px;
+  width: 600px;
+  height: 384px;
+}
+
+.victory-window {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.victory-bar {
+  height: 600px;
+  z-index: 1;
+}
+
+.victory-progress-bar {
+  position: absolute;
+  width: 185px;
+  top: 143px;
+  z-index: 2;
+}
+
+.victory-background {
+  position: absolute;
+  height: 600px;
+  z-index: 0;
+  animation: rotate infinite 5s linear;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .pyro > .before, .pyro > .after {
