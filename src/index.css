@@ -20,6 +20,22 @@ body {
 .victory-window {
   width: 600px;
   height: 384px;
+  animation: size 3s ease-in-out;
+}
+
+@keyframes size {
+  from {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.5);
+  }
+  75% {
+    transform: scale(.8);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 
 .counter {
