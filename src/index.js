@@ -39,7 +39,7 @@ const createWindow = () => {
     mainWindow.show()
   })
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 };
 
 if (process.platform === 'linux') {
@@ -66,7 +66,7 @@ if (process.platform === 'linux') {
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
-    globalShortcut.register('CommandOrControl+X', createWindow)
+    globalShortcut.register('CommandOrControl+W', createWindow)
   } else {
     BrowserWindow.getAllWindows()[0].close()
   }
