@@ -9,7 +9,50 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
+    "lint": "echo \"No linting configured\"",
+    "build": "electron-builder -wl"
+  },
+  "keywords": [],
+  "author": {
+    "name": "somakun",
+    "email": "somabaka@gmail.com"
+  },
+  "license": "MIT",
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "icon": "./src/assets/icons/icon.png"
+      },
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "fanfare",
+            "icon": "./src/assets/icons/icon.png"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {
+            "name": "fanfare"
+          }
+        }
+      ]
+    }
+  },
+  "build": {
+    "linux": {
+      "icon": "./build/icon.png"
+    },
+    "win": {
+      "icon": "build/icon.ico"
+    }
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0"
