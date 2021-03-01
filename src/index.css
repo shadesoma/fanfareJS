@@ -40,7 +40,7 @@ body {
 
 .counter {
   position: absolute;
-  top: 145px;
+  top: 160px;
   z-index: 2;
   font-family: 'Swis721 Blk BT Black', monospace;
   font-size: 100px;
