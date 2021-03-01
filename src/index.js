@@ -8,7 +8,7 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 
 let tray = null
 app.whenReady().then(() => {
-  tray = new Tray(__dirname + '/assets/icons/1f389.png')
+  tray = new Tray(__dirname + '/assets/icons/icon.png')
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Close', type: 'normal' },
   ])
@@ -25,15 +25,19 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     // width: 800,
     // height: 600,
+    show: false,
     transparent: true,
     frame: false,
     fullscreen: true,
-    icon: __dirname + '/assets/icons/1f389.png'
+    icon: __dirname + '/assets/icons/icon.png'
   });
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show()
+  })
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
 };
