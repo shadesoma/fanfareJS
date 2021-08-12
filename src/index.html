@@ -1,51 +1,103 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Hello World!</title>
-    <link rel="stylesheet" href="index.css">
-    <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
+  <meta charset="UTF-8">
+  <title>Hello World!</title>
+  <link rel="stylesheet" href="index.css">
+  <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
 </head>
 <body>
 
 <div class="main-window-wrapper">
   <div class="content">
     <div class="victory-window">
-        <img class="victory-bar" src="./assets/icons/victory-bar.png" alt="bar">
-        <img class="victory-progress-bar" src="./assets/icons/victory-progress-bar.png" alt="progress">
-        <img class="victory-background" src="./assets/icons/victory-background.png" alt="victory-background">
+      <img class="victory-bar" src="./assets/icons/victory-bar.png" alt="bar">
+      <div class="victory-progress-bar-wrapper">
+        <div id="victory-progress-bar" class="victory-progress-bar"></div>
+      </div>
+      <img class="victory-background" src="./assets/icons/victory-background.png" alt="victory-background">
 
-        <div class="counter">132</div>
+      <div id="counter" class="counter">0</div>
 
-        <div class="difficulty-buttons">
-            <div class="difficulty-buttons-container">
-                <img class="easy-button" src="./assets/icons/victory-easy.png" alt="easy">
-                <img class="normal-button" src="./assets/icons/victory-normal.png" alt="normal">
-                <img class="hard-button" src="./assets/icons/victory-hard.png" alt="hard">
-            </div>
+      <div id="difficulty-buttons" class="difficulty-buttons">
+        <div class="difficulty-buttons-container">
+          <img class="easy-button" src="./assets/icons/victory-easy.png" alt="easy" onclick="levelUp(5)">
+          <img class="normal-button" src="./assets/icons/victory-normal.png" alt="normal" onclick="levelUp(10)">
+          <img class="hard-button" src="./assets/icons/victory-hard.png" alt="hard" onclick="levelUp(15)">
         </div>
+      </div>
     </div>
   </div>
 </div>
 
 <canvas id="my-canvas"></canvas>
 <div class="pyro">
-    <div class="before"></div>
-    <div class="after"></div>
+  <div class="before"></div>
+  <div class="after"></div>
 </div>
 <audio src="assets/kids.mp3" autoplay></audio>
 <audio src="assets/fanfare.mp3" autoplay></audio>
 <audio src="assets/fireworks_3sbgqXLt.mp3" autoplay loop></audio>
 
 <script>
-    const confettiSettings = {
-        target: 'my-canvas',
-        max: 150,
-        animate: true,
-        rotate: true
-    };
-    const confetti = new ConfettiGenerator(confettiSettings);
-    confetti.render();
+  const confettiSettings = {
+    target: 'my-canvas',
+    max: 150,
+    animate: true,
+    rotate: true
+  };
+  const confetti = new ConfettiGenerator(confettiSettings);
+  confetti.render();
+
+  const calcPercent = (v, t) => (t / v) * 100;
+
+  const count = document.getElementById('counter')
+  const progressBar = document.getElementById('victory-progress-bar')
+  const buttons = document.getElementById('difficulty-buttons')
+  const getCount = () => localStorage.getItem('count')
+  const setCount = (level) => localStorage.setItem('count', JSON.stringify(level))
+
+  let getCountData = JSON.parse(getCount())
+  let progress = 0
+
+  const getProgress = () => {
+    getCountData = JSON.parse(getCount())
+    progress = calcPercent(getCountData.nextLevel, getCountData.point)
+    progressBar.style.width = `${progress}%`
+  }
+
+  if (getCount()) {
+    count.innerHTML = getCountData.level
+    getProgress()
+  } else {
+    setCount({level: 0, point: 0, nextLevel: 5})
+    getCountData = JSON.parse(getCount())
+    count.innerHTML = String(0)
+  }
+
+  const levelUp = (points) => {
+    if (getCountData.point + points < getCountData.nextLevel) {
+      setCount({...getCountData, point: getCountData.point + points})
+      getProgress()
+    } else {
+      if (getCountData.point + points === getCountData.nextLevel) {
+        setCount({level: getCountData.level + 1, point: 0, nextLevel: getCountData.nextLevel + 5})
+        count.innerHTML = getCountData.level + 1
+        getProgress()
+      } else {
+        setCount({
+          level: getCountData.level + 1,
+          point: points - (getCountData.nextLevel - getCountData.point),
+          nextLevel: getCountData.nextLevel + 5
+        })
+        count.innerHTML = getCountData.level + 1
+        getProgress()
+      }
+    }
+    buttons.style.display = 'none'
+  }
+
+
 </script>
 </body>
 </html>

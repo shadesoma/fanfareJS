@@ -1,16 +1,16 @@
 {
   "name": "fanfare",
   "productName": "fanfare",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "My Electron application description",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make",
+    "make": "electron-forge make --platform=win32",
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\"",
-    "build": "electron-builder -wl"
+    "build": "electron-builder -w"
   },
   "keywords": [],
   "author": {
