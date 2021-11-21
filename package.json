@@ -1,7 +1,7 @@
 {
   "name": "fanfare",
   "productName": "fanfare",
-  "version": "1.0.4",
+  "version": "1.0.2",
   "companyName": "somakun",
   "LegalCopyright" : "Copyright © 2021 somakun",
   "description": "My Electron application description",
