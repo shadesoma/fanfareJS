@@ -29,7 +29,11 @@ const createWindow = () => {
     transparent: true,
     frame: false,
     fullscreen: true,
-    icon: __dirname + '/assets/icons/icon.png'
+    icon: __dirname + '/assets/icons/icon.png',
+    webPreferences: {
+      preload: path.join(app.getAppPath(), 'preload.js'),
+      preload: path.join(app.getAppPath(), 'confetti.js')
+    }
   });
 
   // and load the index.html of the app.
