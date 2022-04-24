@@ -1,28 +1,41 @@
 const { app, BrowserWindow, globalShortcut, Menu, Tray } = require('electron');
 const path = require('path');
+var AutoLaunch = require('auto-launch');
+
+var MyAutoLauncher = new AutoLaunch({
+	name: 'FanfareJS',
+	path: app.getPath('exe'),
+});
+
+MyAutoLauncher.enable();
+
+MyAutoLauncher.isEnabled()
+.then(function(isEnabled){
+	if(isEnabled){
+	    return;
+	}
+	MyAutoLauncher.enable();
+})
+.catch(function(err){
+    // handle error
+});
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit();
 }
 
-let tray = null
-app.whenReady().then(() => {
-  tray = new Tray(__dirname + '/assets/icons/icon.png')
-  const contextMenu = Menu.buildFromTemplate([
-    { label: 'Close', type: 'normal' },
-  ])
-  contextMenu.items[0].click = () => app.quit()
-  tray.setContextMenu(contextMenu)
-})
+let tray = null;
+
+let mainWindow = null
 
 const createWindow = () => {
-
   if (BrowserWindow.getFocusedWindow()) {
-    BrowserWindow.getAllWindows()[0].close()
+    mainWindow.close()
+    return
   }
-  // Create the browser window.
-  const mainWindow = new BrowserWindow({
+
+  mainWindow = new BrowserWindow({
     // width: 800,
     // height: 600,
     show: false,
@@ -31,48 +44,50 @@ const createWindow = () => {
     fullscreen: true,
     icon: __dirname + '/assets/icons/icon.png',
     webPreferences: {
-      preload: path.join(app.getAppPath(), 'preload.js'),
-      preload: path.join(app.getAppPath(), 'confetti.js')
-    }
+      preload: path.join(__dirname, 'preload.js')
+    },
+    nodeIntegration: false,
+    contextIsolation: true,
   });
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
   mainWindow.once('ready-to-show', () => {
-    mainWindow.show()
+    mainWindow.show();
   })
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
 };
 
-if (process.platform === 'linux') {
-  // let appIcon = null
-  // app.whenReady().then(() => {
-  //   appIcon = new Tray(__dirname + '/assets/icons/1f389.png')
-  //   const contextMenu = Menu.buildFromTemplate([
-  //     { label: 'Close', type: 'normal' },
-  //   ])
-  //
-  //   // Make a change to the context menu
-  //   contextMenu.items[0].click = () => app.quit()
-  //
-  //   // Call this again for Linux because we modified the context menu
-  //   appIcon.setContextMenu(contextMenu)
-  // })
+app.whenReady().then(() => {
+  tray = new Tray(__dirname + '/assets/icons/icon.png')
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Close', type: 'normal' },
+  ])
+  contextMenu.items[0].click = () => app.quit()
+  tray.setContextMenu(contextMenu)
 
+
+  app.on('activate', () => {
+    // On OS X it's common to re-create a window in the app when the
+    // dock icon is clicked and there are no other windows open.
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow();
+    }
+  });
+})
+
+if (process.platform === 'linux') {
   app.commandLine.appendSwitch('enable-transparent-visuals');
   app.commandLine.appendSwitch('disable-gpu');
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.on('ready', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     globalShortcut.register('CommandOrControl+5', createWindow)
   } else {
-    BrowserWindow.getAllWindows()[0].close()
+    mainWindow.close();
   }
 });
 
@@ -84,14 +99,3 @@ app.on('window-all-closed', () => {
     app.hide()
   }
 });
-
-app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
-});
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.

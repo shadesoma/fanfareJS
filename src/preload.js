@@ -1,11 +1,3 @@
-document.addEventListener("DOMContentLoaded", function(event) {
-  const jsScript = document.createElement('script')
-  jsScript.src =
-    'https://coolJavascript.js'
-
-  document.body.appendChild(jsScript)
-});
-
 const confettiSettings = {
   target: 'my-canvas',
   max: 150,
